@@ -31,9 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'mainquote',
-    'editquote',
-    'topquotes',
+    'data',
+    'main',
+    'edit',
+    'chart',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

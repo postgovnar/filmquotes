@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактировать цитату</title>
+</head>
+<body>
+{% for message in messages %}<div>{{ message }}</div>{% endfor %}
+    <h1>Редактировать цитату</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="hidden" name="source" value="{{ source_id }}">  <!-- Скрытое поле с source_id -->
+
+        <p>
+            <label>Цитата:</label><br>
+            <textarea name="quote" rows="4" cols="50">{{ form.quote.value }}</textarea>
+            {{ form.quote.errors }}
+        </p>
+
+        <p>
+            <label>Вес:</label><br>
+            <input type="number" name="weight" value="{{ form.weight.value }}">
+            {{ form.weight.errors }}
+        </p>
+
+        <input type="submit" value="Сохранить">
+    </form>
+</body>
+</html>

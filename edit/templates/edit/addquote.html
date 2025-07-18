@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая цитата</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {% for message in messages %}<div>{{ message }}</div>{% endfor %}
+    <h3>Добавить цитату для источника: {{ source.source }}</h3>
+
+    <div>
+        <label for="id_quote">Текст цитаты:</label>
+        <textarea name="quote" id="id_quote" rows="4" required></textarea>
+    </div>
+
+    <div>
+        <label for="id_weight">Вес (приоритет):</label>
+        <input type="number" name="weight" id="id_weight" value="1" min="1">
+
+    </div>
+
+    <input type="submit" value="Сохранить цитату">
+</form>
+
+</body>
+</html>

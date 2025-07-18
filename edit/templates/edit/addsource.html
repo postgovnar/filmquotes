@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить источник</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {% for message in messages %}<div>{{ message }}</div>{% endfor %}
+    <h3>Добавить источник</h3>
+
+    <div>
+        <label for="id_source">Источник:</label>
+        <input type="text" name="source" id="id_source">
+    </div>
+
+    <input type="submit" value="Сохранить источник">
+</form>
+
+</body>
+</html>

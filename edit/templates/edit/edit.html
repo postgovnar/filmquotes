@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление цитатами</title>
+</head>
+<body>
+    <h1>Страница для добавления/редактирования цитат</h1>
+    <h2>Выберите источник и добавьте в него новую цитату или создайте новый источник</h2>
+    {% for source_quote in sources_quotes %}
+    <details><summary>{{ source_quote.source.name }}</summary>
+        {% for quote in source_quote.quotes %}
+        {{ quote.quote }} <br>
+        Вес:{{ quote.weight }} <br>
+        Дата:{{ quote.add_date }} <br>
+        Просмотры:{{ quote.views }} <br>
+        Лайки:{{ quote.likes }} <br>
+        Дизлайки:{{ quote.dislikes }} <br>
+        <a href="{% url 'editquote' quote.id %}">Редактировать цитату</a> <br>
+        <a href="{% url 'deletequote' quote.id %}">Удалить цитату</a> <br> <br>
+        {% endfor %}
+        {% if source_quote.quotes|length < 3 %}
+        <a href="{% url 'addquote' source_quote.source.id %}">Добавить цитату</a> <br> <br>
+        {% endif %}
+        <a href="{% url 'deletesource' source_quote.source.id %}">Удалить источник</a> <br> <br>
+    </details>
+    {% endfor %}
+    <a href="{% url 'addsource' %}">Добавить источник</a> <br>
+</body>
+</html>
