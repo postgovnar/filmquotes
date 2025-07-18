@@ -2,9 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>mainquote</title>
+    <title>Случайная цитата</title>
+    <style>
+    .votes button {
+        padding: 8px 16px;
+        margin: 0 5px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        background: #f5f5f5;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+    .votes button:hover {
+        background: #eee;
+    }
+    .votes button.active {
+        border-color: transparent;
+        color: white;
+    }
+    #like-btn.active {
+        background-color: #4CAF50;
+    }
+    #dislike-btn.active {
+        background-color: #f44336;
+    }
+    .votes span {
+        margin-left: 5px;
+        font-weight: bold;
+    }
+    </style>
 </head>
+
 <body>
-    <h1>Тут будет основная страница со случайной цитатой и возможностью ее оценить</h1>
-</body>
+    <h1>Ваша цитата:</h1>
+    <h3>{{ quote.quote }}</h3>
+    <h4>{{ quote.source.source }}</h4>
+    <h5>Количество просмотров: {{ quote.views }}</h5>
+
+
+    <div>
+        <button id="like-btn" data-quote-id="{{ quote.id }}">
+        Лайк <span id="likes-count">{{ quote.likes }}</span>
+        </button>
+        <button id="dislike-btn" data-quote-id="{{ quote.id }}">
+        Дизлайк <span id="dislikes-count">{{ quote.dislikes }}</span>
+        </button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const quoteId = {{ quote.id }};
+        const likeBtn = document.getElementById('like-btn');
+        const dislikeBtn = document.getElementById('dislike-btn');
+        let currentVote = null;
+        let previousVote = null;
+
+        function updateUI() {
+            likeBtn.classList.toggle('active', currentVote === 'like');
+            dislikeBtn.classList.toggle('active', currentVote === 'dislike');
+        }
+
+        function sendVote(action, prevAction) {
+            const formData = new FormData();
+            formData.append('action', action);
+            formData.append('previous_action', prevAction || '');
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            fetch(`/quote/${quoteId}/vote/`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('likes-count').textContent = data.likes;
+                document.getElementById('dislikes-count').textContent = data.dislikes;
+            });
+        }
+
+        likeBtn.addEventListener('click', function() {
+            const likesElement = document.getElementById('likes-count');
+            let newLikes = parseInt(likesElement.textContent);
+
+            if (currentVote === 'like') {
+                newLikes -= 1;
+                previousVote = 'like';
+                currentVote = null;
+            } else {
+                if (currentVote === 'dislike') {
+                    previousVote = 'dislike';
+                }
+                newLikes += 1;
+                currentVote = 'like';
+            }
+
+            likesElement.textContent = newLikes;
+            updateUI();
+            sendVote(currentVote || 'cancel', previousVote);
+        });
+
+        dislikeBtn.addEventListener('click', function() {
+            const dislikesElement = document.getElementById('dislikes-count');
+            let newDislikes = parseInt(dislikesElement.textContent);
+
+            if (currentVote === 'dislike') {
+                newDislikes -= 1;
+                previousVote = 'dislike';
+                currentVote = null;
+            } else {
+                if (currentVote === 'like') {
+                    previousVote = 'like';
+                }
+                newDislikes += 1;
+                currentVote = 'dislike';
+            }
+
+            dislikesElement.textContent = newDislikes;
+            updateUI();
+            sendVote(currentVote || 'cancel', previousVote);
+        });
+
+        updateUI();
+    });
+    </script>
 </html>

@@ -25,9 +25,9 @@ class AddQuoteView(FormView):
 
     def form_valid(self, form):
         quote = form.save(commit=False)
-        quote.source = Sources.objects.get(pk=self.kwargs['pk'])
+        quote.source = Sources.objects.get(id=self.kwargs['pk'])
         form.save()
-        Sources.objects.filter(pk=self.kwargs['pk']).update(usage=F('usage') + 1)
+        Sources.objects.filter(id=self.kwargs['pk']).update(usage=F('usage') + 1)
         return super().form_valid(form)
     def form_invalid(self, form):
         messages.error(self.request, f"Ошибка: {form.errors} ")
