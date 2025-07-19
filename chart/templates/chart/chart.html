@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Топ</title>
+</head>
+<body>
+    <h1>Топ 10 цитат по лайкам</h1>
+    <ol>
+        {% for quote in quotes %}
+        <li>
+            <p>{{ quote.quote }}</p>
+            <p>Источник: {{ quote.source }} | Лайков: {{ quote.likes }}</p>
+        </li>
+        {% endfor %}
+    </ol>
+    <a href="{% url 'main' %}">Цитаты </a>
+    <a href="{% url 'chart' %}">Топ </a>
+    <a href="{% url 'edit_start' %}">Редактировать</a>
+</body>
+</html>
