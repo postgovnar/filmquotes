@@ -13,7 +13,7 @@ class Quotes(models.Model):
     quote = models.TextField(unique=True)
     source = models.ForeignKey(Sources, on_delete = models.CASCADE)
     weight = models.IntegerField(default=1)
-    add_date = models.DateTimeField(default=now())
+    add_date = models.DateTimeField(default=now)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)

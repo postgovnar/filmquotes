@@ -1,4 +1,11 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
-def simple_view(request):
-    return HttpResponse("Привет, это самый простой view!")
+from data.models import Quotes
+
+
+def chart_view(request):
+    quotes = Quotes.objects.all().order_by('-likes')[:10]
+    data = {
+        'quotes': quotes,
+    }
+    return render(request, 'chart/chart.html', data)

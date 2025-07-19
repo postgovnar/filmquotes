@@ -1,8 +1,4 @@
-import json
-
-from django.db.models import F
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from data.models import Sources, Quotes
 import random
 from django.http import JsonResponse, HttpResponse
